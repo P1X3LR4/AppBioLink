@@ -20,7 +20,7 @@ function App() {
           <ButtonLink
             icon={Wh}
             label="ENTRE EM CONTATO"
-            url=""
+            url="https://wa.me/5563991179925?text=Ol%C3%A1%21+Me+chamo"
             ii="animate__animated animate__fadeInDown animate__delay-1s animate__faster"
           />
           <ButtonLink

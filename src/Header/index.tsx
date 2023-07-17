@@ -12,7 +12,7 @@ export default function Header() {
         ANZO DESIGNER
       </p>
       <p className="text-white/40 font-light tracking-widest text-sm animate__animated animate__fadeInDown">
-        Designer Gráfico | Social Mídia
+        Designer Gráfico para Social Mídia
       </p>
     </div>
   );
