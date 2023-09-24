@@ -1,50 +1,73 @@
-import "animate.css";
+import Logo from "/logo.svg";
+import BackgroundAnimated from "./components/BackgroundAnimated/BackgroundAnimated";
+import LinkButton from "./components/LinkButton/LinkButton";
+import { useState, useEffect } from "react";
+import { TransitionGroup, CSSTransition } from "react-transition-group";
 
-import "./assets/css/App.css";
-import Header from "./Header";
-import Footer from "./Footer";
+const linksButton: {
+  [key: string]: string;
+} = {
+  wa: "https://wa.me/5563991179925?text=Ol%C3%A1%21+Me+chamo",
+  in: "https://www.instagram.com/anzo.designer/",
+  be: "https://www.behance.net/anzodesigner",
+};
 
-import Wh from "./assets/image/whatsapp.svg";
-import It from "./assets/image/instagram.svg";
-import Be from "./assets/image/behance.svg";
-import Em from "./assets/image/email.svg";
-import ButtonLink from "./components/ButtonLink";
+const imagesButtonLink: {
+  [key: string]: string;
+} = {
+  wa: "/img_link_zap_original.png",
+  in: "/img_link_behance_original.png",
+  be: "/img_link_instagram_original.png",
+};
 
 function App() {
-  return (
-    <div>
-      <div className="w-screen min-h-screen flex flex-col items-center">
-        <Header />
+  const [visibleLinks, setVisibleLinks] = useState<string[]>([]);
 
-        <div className="flex flex-col justify-center items-center gap-4 mt-8 w-[80%] md:max-w-md">
-          <ButtonLink
-            icon={Wh}
-            label="ENTRE EM CONTATO"
-            url="https://wa.me/5563991179925?text=Ol%C3%A1%21+Me+chamo"
-            ii="animate__animated animate__fadeInDown animate__delay-1s animate__faster"
-          />
-          <ButtonLink
-            icon={Be}
-            label="MEU PORTIFOLIO"
-            url="https://www.behance.net/anzodesigner"
-            ii="animate__animated animate__fadeInUp animate__delay-1s animate__faster"
-          />
-          <ButtonLink
-            icon={Em}
-            label="MANDAR EMAIL"
-            url="mailto:anzodesigner.ra@gmail.com"
-            ii="animate__animated animate__fadeInDown animate__delay-1s animate__faster"
-          />
-          <ButtonLink
-            icon={It}
-            label="@ANZO.DESIGNER"
-            url="https://www.instagram.com/anzo.designer/"
-            ii="animate__animated animate__fadeInUp animate__delay-1s animate__faster"
-          />
+  useEffect(() => {
+    // Adicione os links à lista de links visíveis um por um com um atraso de 500ms entre cada um
+    const keys = Object.keys(linksButton);
+    const delay = 600; // Tempo de atraso entre cada link (em milissegundos)
+
+    keys.forEach((key, index) => {
+      const timeoutId = setTimeout(() => {
+        setVisibleLinks((prevLinks) => [...prevLinks, key]);
+      }, index * delay);
+
+      // Limpe o timeout ao desmontar o componente para evitar vazamentos de memória
+      return () => clearTimeout(timeoutId);
+    });
+  }, []);
+
+  return (
+    <>
+      <BackgroundAnimated />
+      <div className="main">
+        <div className="topbar-container">
+          <div className="logo-container">
+            <img className="logo-image" src={Logo} alt="" />
+          </div>
+
+          <div className="welcome-container">
+            <span className="text-welcome-1">Seja </span>
+            <span className="text-welcome-2">Bem-vindo!</span>
+          </div>
+
+          <span className="text-subtitle">LINKS ÚTEIS</span>
         </div>
-        <Footer />
-      </div>
-    </div>
+          <TransitionGroup className="links-images-container">
+            {visibleLinks.map((key, index) => (
+              <CSSTransition key={key} timeout={500} classNames="fade">
+                <LinkButton
+                  key={key + index}
+                  link={linksButton[key]}
+                  image={imagesButtonLink[key]}
+                  alt={key}
+                />
+              </CSSTransition>
+            ))}
+          </TransitionGroup>
+        </div>
+    </>
   );
 }
 
